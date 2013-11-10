@@ -81,17 +81,13 @@ public class TownyEntityListener implements Listener {
 
 		Entity attacker = event.getDamager();
 
-		// Not wartime
-		if (!TownyUniverse.isWarTime()) {
+		if (CombatUtil.preventDamageCall(attacker, event.getEntity())) {
+			// Remove the projectile here so no
+			// other events can fire to cause damage
+			if (attacker instanceof Projectile)
+				attacker.remove();
 
-			if (CombatUtil.preventDamageCall(attacker, event.getEntity())) {
-				// Remove the projectile here so no
-				// other events can fire to cause damage
-				if (attacker instanceof Projectile)
-					attacker.remove();
-
-				event.setCancelled(true);
-			}
+			event.setCancelled(true);
 		}
 		
 	}
