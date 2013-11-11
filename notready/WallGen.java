@@ -10,7 +10,7 @@ public class WallGen {
 			0 = Wall
 			1 = Turret wall (3 enemy sides)
 			2 = Turret wall (1 enemy sides)
-	*/
+	*//
 	
 	public static boolean deleteTownWall(TownyWorld world, Town town) {
 		BlockQueue blockQueue = BlockQueue.getInstance();
