@@ -1,0 +1,11 @@
+.settings/
+bin/
+target/
+build/
+repos/
+lib/
+Fe.jar
+.gradle/
+.classpath
+.project
+.DS_Store

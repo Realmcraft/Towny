@@ -1,11 +1,6 @@
 package com.palmergames.bukkit.towny.permissions;
 
-import org.anjocaido.groupmanager.GroupManager;
 import org.bukkit.entity.Player;
-//import org.bukkit.permissions.Permission;
-//import org.bukkit.permissions.PermissionDefault;
-
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyMessaging;
@@ -25,10 +20,6 @@ public abstract class TownyPermissionSource {
 
 	protected TownySettings settings;
 	protected Towny plugin;
-
-	protected GroupManager groupManager = null;
-	protected com.nijikokun.bukkit.Permissions.Permissions permissions = null;
-	protected PermissionsEx pex = null;
 
 	abstract public String getPrefixSuffix(Resident resident, String node);
 
