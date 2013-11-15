@@ -83,6 +83,8 @@ public abstract class TownyDataSource {
 				in.close();
 				return false;
 			}
+			
+			in.close();
 		}
 		System.out.println("[Towny] Error recieving input, exiting.");
 		return false;
