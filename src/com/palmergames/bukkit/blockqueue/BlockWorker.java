@@ -72,11 +72,11 @@ public class BlockWorker implements Runnable {
 
 		Block block = blockWork.getWorld().getBlockAt(blockWork.getX(), blockWork.getY(), blockWork.getZ());
 
-		if (blockWork.getId() == block.getTypeId())
+		if (blockWork.getType() == block.getType())
 			return;
 
 		// TODO: Set block
-		block.setTypeId(blockWork.getId());
+		block.setType(blockWork.getType());
 		block.setData(blockWork.getData());
 	}
 

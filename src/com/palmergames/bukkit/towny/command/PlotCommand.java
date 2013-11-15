@@ -332,7 +332,7 @@ public class PlotCommand implements CommandExecutor {
 
 						for (String material : TownyUniverse.getDataSource().getWorld(world).getPlotManagementMayorDelete())
 							if (Material.matchMaterial(material) != null) {
-								TownyRegenAPI.deleteTownBlockMaterial(townBlock, Material.getMaterial(material).getId());
+								TownyRegenAPI.deleteTownBlockMaterial(townBlock, Material.getMaterial(material));
 								player.sendMessage(String.format(TownySettings.getLangString("msg_clear_plot_material"), material));
 							} else
 								throw new TownyException(String.format(TownySettings.getLangString("msg_err_invalid_property"), material));

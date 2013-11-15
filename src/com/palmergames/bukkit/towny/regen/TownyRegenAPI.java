@@ -429,7 +429,7 @@ public class TownyRegenAPI {
 	 * @param townBlock
 	 * @param material
 	 */
-	public static void deleteTownBlockMaterial(TownBlock townBlock, int material) {
+	public static void deleteTownBlockMaterial(TownBlock townBlock, Material type) {
 
 		//Block block = null;
 		int plotSize = TownySettings.getTownBlockSize();
@@ -452,7 +452,7 @@ public class TownyRegenAPI {
 				for (int x = 0; x < plotSize; x++)
 					for (int y = height; y > 0; y--) { //Check from bottom up else minecraft won't remove doors
 						Block block = world.getBlockAt(worldx + x, y, worldz + z);
-						if (block.getTypeId() == material) {
+						if (block.getType() == type) {
 							block.setType(Material.AIR);
 						}
 						block = null;

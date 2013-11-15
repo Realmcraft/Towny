@@ -1,17 +1,19 @@
 package com.palmergames.bukkit.blockqueue;
 
+import org.bukkit.Material;
 import org.bukkit.World;
 
 public class BlockWork {
 
 	private World world;
-	private int id, x, y, z;
+	private Material type;
+	private int x, y, z;
 	private byte data;
 
-	public BlockWork(World world, int id, int x, int y, int z, byte data) {
+	public BlockWork(World world, Material type, int x, int y, int z, byte data) {
 
 		this.world = world;
-		this.id = id;
+		this.type = type;
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -23,9 +25,9 @@ public class BlockWork {
 		return world;
 	}
 
-	public int getId() {
+	public Material getType() {
 
-		return id;
+		return type;
 	}
 
 	public int getX() {
