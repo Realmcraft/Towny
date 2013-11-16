@@ -579,11 +579,11 @@ public class TownyPlayerListener implements Listener {
 		tag = ChatColor.stripColor(tag);
 
 		if (CombatUtil.isAlly(player.getName(), namedPlayer.getName())){
-			tag = ChatColor.DARK_RED + tag;
+			tag = ChatColor.AQUA + tag;
 
 			event.setTag(tag);
 		}else if (CombatUtil.isEnemy(player.getName(), namedPlayer.getName())){
-			tag = ChatColor.AQUA + tag;
+			tag = ChatColor.DARK_RED + tag;
 
 			event.setTag(tag);
 		}

@@ -9,7 +9,11 @@ import com.palmergames.bukkit.towny.permissions.TownyPerms;
 import com.palmergames.bukkit.towny.war.flagwar.TownyWar;
 import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.StringMgmt;
+
+import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.kitteh.tag.TagAPI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,11 +60,13 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 
 	public void addAlly(Nation nation) throws AlreadyRegisteredException {
 
-		if (hasAlly(nation))
+		if (hasAlly(nation)){
 			throw new AlreadyRegisteredException();
-		else {
+		} else {
 			try {
 				removeEnemy(nation);
+
+				updateTags();
 			} catch (NotRegisteredException e) {
 			}
 			getAllies().add(nation);
@@ -69,10 +75,27 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 
 	public boolean removeAlly(Nation nation) throws NotRegisteredException {
 
-		if (!hasAlly(nation))
+		if (!hasAlly(nation)){
 			throw new NotRegisteredException();
-		else
-			return getAllies().remove(nation);
+		} else {
+			boolean removed = getAllies().remove(nation);
+
+			updateTags();
+
+			return removed;
+		}
+	}
+
+	private void updateTags(){
+		for (Town town : getTowns()){
+			for (Resident resident : town.getResidents()){
+				Player player = Bukkit.getPlayerExact(resident.getName());
+
+				if (player != null){
+					TagAPI.refreshPlayer(player);
+				}
+			}
+		}
 	}
 
 	public boolean removeAllAllies() {
@@ -101,6 +124,8 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 			} catch (NotRegisteredException e) {
 			}
 			getEnemies().add(nation);
+
+			updateTags();
 		}
 
 	}
@@ -109,8 +134,13 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 
 		if (!hasEnemy(nation))
 			throw new NotRegisteredException();
-		else
-			return getEnemies().remove(nation);
+		else {
+			boolean removed = getEnemies().remove(nation);
+
+			updateTags();
+
+			return removed;
+		}
 	}
 
 	public boolean removeAllEnemies() {
@@ -176,26 +206,26 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 		else {
 			towns.add(town);
 			town.setNation(this);
-			
+
 			BukkitTools.getPluginManager().callEvent(new NationAddTownEvent(town, this));
 		}
 	}
 
-//	public void addAssistant(Resident resident) throws AlreadyRegisteredException {
-//
-//		if (hasAssistant(resident))
-//			throw new AlreadyRegisteredException();
-//		else
-//			getAssistants().add(resident);
-//	}
+	//	public void addAssistant(Resident resident) throws AlreadyRegisteredException {
+	//
+	//		if (hasAssistant(resident))
+	//			throw new AlreadyRegisteredException();
+	//		else
+	//			getAssistants().add(resident);
+	//	}
 
-//	public void removeAssistant(Resident resident) throws NotRegisteredException {
-//
-//		if (!hasAssistant(resident))
-//			throw new NotRegisteredException();
-//		else
-//			assistants.remove(resident);
-//	}
+	//	public void removeAssistant(Resident resident) throws NotRegisteredException {
+	//
+	//		if (!hasAssistant(resident))
+	//			throw new NotRegisteredException();
+	//		else
+	//			assistants.remove(resident);
+	//	}
 
 	public void setCapital(Town capital) {
 
@@ -241,20 +271,20 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 		return false;
 	}
 
-//	public void setAssistants(List<Resident> assistants) {
-//
-//		this.assistants = assistants;
-//	}
-//
+	//	public void setAssistants(List<Resident> assistants) {
+	//
+	//		this.assistants = assistants;
+	//	}
+	//
 	public List<Resident> getAssistants() {
 
 		List<Resident> assistants = new ArrayList<Resident>();
-		
+
 		for (Town town: towns)
-		for (Resident assistant: town.getResidents()) {
-			if (assistant.hasNationRank("assistant"))
-				assistants.add(assistant);
-		}
+			for (Resident assistant: town.getResidents()) {
+				if (assistant.hasNationRank("assistant"))
+					assistants.add(assistant);
+			}
 		return assistants;
 	}
 
@@ -327,7 +357,7 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 		} catch (AlreadyRegisteredException e) {
 		}
 		towns.remove(town);
-		
+
 		BukkitTools.getPluginManager().callEvent(new NationRemoveTownEvent(town, this));
 	}
 
@@ -337,23 +367,23 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 			remove(town);
 	}
 
-//	public boolean hasAssistantIn(Town town) {
-//
-//		for (Resident resident : town.getResidents())
-//			if (hasAssistant(resident))
-//				return true;
-//		return false;
-//	}
-//
-//	private void removeAssistantsIn(Town town) {
-//
-//		for (Resident resident : new ArrayList<Resident>(town.getResidents()))
-//			if (hasAssistant(resident))
-//				try {
-//					removeAssistant(resident);
-//				} catch (NotRegisteredException e) {
-//				}
-//	}
+	//	public boolean hasAssistantIn(Town town) {
+	//
+	//		for (Resident resident : town.getResidents())
+	//			if (hasAssistant(resident))
+	//				return true;
+	//		return false;
+	//	}
+	//
+	//	private void removeAssistantsIn(Town town) {
+	//
+	//		for (Resident resident : new ArrayList<Resident>(town.getResidents()))
+	//			if (hasAssistant(resident))
+	//				try {
+	//					removeAssistant(resident);
+	//				} catch (NotRegisteredException e) {
+	//				}
+	//	}
 
 	public void setTaxes(double taxes) {
 
@@ -414,9 +444,9 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 				return true;
 		return false;
 	}
-	
+
 	public void collect(double amount) throws EconomyException {
-		
+
 		if (TownySettings.isUsingEconomy()) {
 			double bankcap = TownySettings.getNationBankCap();
 			if (bankcap > 0) {
@@ -425,7 +455,7 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 					return;
 				}
 			}
-			
+
 			this.collect(amount, null);
 		}
 
@@ -458,9 +488,9 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 		List<String> out = new ArrayList<String>();
 		out.add(getTreeDepth(depth) + "Nation (" + getName() + ")");
 		out.add(getTreeDepth(depth + 1) + "Capital: " + getCapital().getName());
-		
+
 		List<Resident> assistants = getAssistants();
-		
+
 		if (assistants.size() > 0)
 			out.add(getTreeDepth(depth + 1) + "Assistants (" + assistants.size() + "): " + Arrays.toString(assistants.toArray(new Resident[0])));
 		if (getAllies().size() > 0)
@@ -482,14 +512,14 @@ public class Nation extends TownyEconomyObject implements ResidentList {
 		return false;
 	}
 
-    @Override
-    protected World getBukkitWorld() {
-        if (hasCapital() && getCapital().hasWorld()) {
-            return BukkitTools.getWorld(getCapital().getWorld().getName());
-        } else {
-            return super.getBukkitWorld();
-        }
-    }
+	@Override
+	protected World getBukkitWorld() {
+		if (hasCapital() && getCapital().hasWorld()) {
+			return BukkitTools.getWorld(getCapital().getWorld().getName());
+		} else {
+			return super.getBukkitWorld();
+		}
+	}
 
 
 	@Override
