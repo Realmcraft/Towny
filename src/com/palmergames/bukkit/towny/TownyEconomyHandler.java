@@ -85,10 +85,9 @@ public class TownyEconomyHandler {
 	 * Attempt to delete the economy account.
 	 */
 	public static void removeAccount(String accountName) {
-		if (!vaultEconomy.hasAccount(accountName))
-			vaultEconomy.createPlayerAccount(accountName);
-
-		vaultEconomy.withdrawPlayer(accountName, (vaultEconomy.getBalance(accountName)));
+		if (vaultEconomy.hasAccount(accountName)){
+			vaultEconomy.withdrawPlayer(accountName, (vaultEconomy.getBalance(accountName)));
+		}
 	}
 
 	/**
@@ -98,8 +97,9 @@ public class TownyEconomyHandler {
 	 * @return double containing the total in the account
 	 */
 	public static double getBalance(String accountName, World world) {
-		if (!vaultEconomy.hasAccount(accountName))
-			vaultEconomy.createPlayerAccount(accountName);
+		//if (!vaultEconomy.hasAccount(accountName)){
+		//	vaultEconomy.createPlayerAccount(accountName);
+		//}
 
 		return vaultEconomy.getBalance(accountName);
 	}
@@ -113,8 +113,9 @@ public class TownyEconomyHandler {
 	 */
 	public static boolean hasEnough(String accountName, Double amount, World world) {
 
-		if (getBalance(accountName, world) >= amount)
+		if (getBalance(accountName, world) >= amount){
 			return true;
+		}
 
 		return false;
 	}
@@ -127,8 +128,9 @@ public class TownyEconomyHandler {
 	 * @return true if successful
 	 */
 	public static boolean subtract(String accountName, Double amount, World world) {
-		if (!vaultEconomy.hasAccount(accountName))
+		if (!vaultEconomy.hasAccount(accountName)){
 			vaultEconomy.createPlayerAccount(accountName);
+		}
 
 		return vaultEconomy.withdrawPlayer(accountName, amount).type == EconomyResponse.ResponseType.SUCCESS;
 	}
@@ -142,15 +144,17 @@ public class TownyEconomyHandler {
 	 * @return true if successful
 	 */
 	public static boolean add(String accountName, Double amount, World world) {
-		if (!vaultEconomy.hasAccount(accountName))
+		if (!vaultEconomy.hasAccount(accountName)){
 			vaultEconomy.createPlayerAccount(accountName);
+		}
 
 		return vaultEconomy.depositPlayer(accountName, amount).type == EconomyResponse.ResponseType.SUCCESS;
 	}
 
 	public static boolean setBalance(String accountName, Double amount, World world) {
-		if (!vaultEconomy.hasAccount(accountName))
+		if (!vaultEconomy.hasAccount(accountName)){
 			vaultEconomy.createPlayerAccount(accountName);
+		}
 
 		return vaultEconomy.depositPlayer(accountName, (amount - vaultEconomy.getBalance(accountName))).type == EconomyResponse.ResponseType.SUCCESS;
 	}
