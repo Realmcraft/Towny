@@ -1,3 +1,4 @@
+
 package com.palmergames.bukkit.towny;
 
 import net.milkbowl.vault.economy.Economy;
@@ -97,9 +98,9 @@ public class TownyEconomyHandler {
 	 * @return double containing the total in the account
 	 */
 	public static double getBalance(String accountName, World world) {
-		//if (!vaultEconomy.hasAccount(accountName)){
-		//	vaultEconomy.createPlayerAccount(accountName);
-		//}
+		if (!vaultEconomy.hasAccount(accountName)){
+			vaultEconomy.createPlayerAccount(accountName);
+		}
 
 		return vaultEconomy.getBalance(accountName);
 	}
