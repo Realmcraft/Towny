@@ -177,7 +177,7 @@ public class War {
 		for (Player player : BukkitTools.getOnlinePlayers())
 			if (player != null)
 				sendStats(player);
-		
+
 		double halfWinnings;
 		try {
 			// Transactions might leave 1 coin. (OH noez!)
@@ -329,7 +329,9 @@ public class War {
 
 		for (TownBlock townBlock : town.getTownBlocks())
 			remove(townBlock.getWorldCoord());
-		warringTowns.remove(town);
+		//if (town.getTownBlocks().size() < 1){
+			warringTowns.remove(town);
+		//}
 		try {
 			if (!townsLeft(town.getNation()))
 				eliminate(town.getNation());
@@ -341,7 +343,9 @@ public class War {
 
 		for (TownBlock townBlock : town.getTownBlocks())
 			remove(townBlock.getWorldCoord());
-		warringTowns.remove(town);
+		//if (town.getTownBlocks().size() < 1){
+			warringTowns.remove(town);
+		//}
 		try {
 			if (!townsLeft(town.getNation()))
 				eliminate(town.getNation());

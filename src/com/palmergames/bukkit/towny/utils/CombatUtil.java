@@ -42,7 +42,7 @@ public class CombatUtil {
 	 * @return true if we should cancel.
 	 */
 	public static boolean preventDamageCall(Entity attacker, Entity defender) {
-		
+
 		try {
 			TownyWorld world = TownyUniverse.getDataSource().getWorld(defender.getWorld().getName());
 
@@ -65,7 +65,7 @@ public class CombatUtil {
 				a = (Player) attacker;
 			if (defender instanceof Player)
 				b = (Player) defender;
-			
+
 			if (a == b) return false;
 
 			// Allow players to injure themselves
@@ -102,21 +102,21 @@ public class CombatUtil {
 		 * We have an attacking player
 		 */
 		if (attackingPlayer != null) {
-			
+
 			Coord coord = Coord.parseCoord(defendingEntity);
 			TownBlock defenderTB = null;
 			TownBlock attackerTB = null;
-			
+
 			try {
 				attackerTB = world.getTownBlock(Coord.parseCoord(attackingEntity));
 			} catch (NotRegisteredException ex) {
 			}
-			
+
 			try {
 				defenderTB = world.getTownBlock(coord);
 			} catch (NotRegisteredException ex) {
 			}
-			
+
 			/*
 			 * If another player is the target
 			 * or
@@ -126,14 +126,14 @@ public class CombatUtil {
 			if ((defendingPlayer != null)
 					|| ((defenderTB != null) &&
 							((defendingEntity instanceof Wolf) && ((Wolf)defendingEntity).isTamed() && !((Wolf)defendingEntity).getOwner().equals((AnimalTamer) attackingEntity)))
-							) {
-				
+					) {
+
 				/*
 				 * Defending player is in a warzone
 				 */
 				if (world.isWarZone(coord))
 					return false;
-				
+
 				/*
 				 * Check for special pvp plots (arena)
 				 */
@@ -149,17 +149,14 @@ public class CombatUtil {
 				/*
 				 * Check the attackers TownBlock and it's Town for their PvP status, else the world.
 				 */
-				if (preventPvP(world, attackerTB))
+				/*if (preventPvP(world, attackerTB))
 					return true;
-				
-				/*
-				 * Check the defenders TownBlock and it's Town for their PvP status, else the world.
-				 */
+
 				if (preventPvP(world, defenderTB))
-					return true;
-	
+					return true;*/
+
 			} else {
-				
+
 				/*
 				 * Defender is not a player so check for PvM
 				 */
@@ -188,19 +185,19 @@ public class CombatUtil {
 	 * @return true if PvP is disallowed
 	 */
 	public static boolean preventPvP(TownyWorld world, TownBlock townBlock) {
-		
+
 		if (townBlock != null) {
 			try {
-				
+
 				/*
 				 * Check the attackers TownBlock and it's Town for their PvP status
 				 */
 				if (townBlock.getTown().isAdminDisabledPVP())
 					return true;
-				
+
 				if (!townBlock.getTown().isPVP() && !townBlock.getPermissions().pvp && !world.isForcePVP())
 					return true;
-			
+
 			} catch (NotRegisteredException ex) {
 				/*
 				 * Failed to fetch the town data
@@ -209,9 +206,9 @@ public class CombatUtil {
 				if (!isWorldPvP(world))
 					return true;
 			}
-			
+
 		} else {
-			
+
 			/*
 			 * Attacker isn't in a TownBlock so check the world PvP
 			 */
@@ -220,7 +217,7 @@ public class CombatUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Is PvP enabled in this world?
 	 * 
@@ -250,9 +247,13 @@ public class CombatUtil {
 		 */
 		if (attacker == defender)
 			return false;
-		
-		if ((attacker != null) && (defender != null))
-			if (!TownySettings.getFriendlyFire() && CombatUtil.isAlly(attacker.getName(), defender.getName())) {
+
+		if ((attacker != null) && (defender != null)){
+			boolean ally = CombatUtil.isAlly(attacker.getName(), defender.getName());
+			
+			boolean enemy = CombatUtil.isEnemy(attacker.getName(), defender.getName());
+			
+			if (!TownySettings.getFriendlyFire() && (ally || !enemy)) {
 				try {
 					TownBlock townBlock = new WorldCoord(defender.getWorld().getName(), Coord.parseCoord(defender)).getTownBlock();
 					if (!townBlock.getType().equals(TownBlockType.ARENA))
@@ -263,9 +264,10 @@ public class CombatUtil {
 					return true;
 				}
 			}
+		}
 		return false;
 	}
-	
+
 	/**
 	 * Return true if both attacker and defender are in Arena Plots.
 	 * 
@@ -274,16 +276,16 @@ public class CombatUtil {
 	 * @return true if both players in an Arena plot.
 	 */
 	public static boolean isPvPPlot(Player attacker, Player defender) {
-		
+
 		if ((attacker != null) && (defender != null)) {
 			TownBlock attackerTB, defenderTB;
 			try {
 				attackerTB = new WorldCoord(attacker.getWorld().getName(), Coord.parseCoord(attacker)).getTownBlock();
 				defenderTB = new WorldCoord(defender.getWorld().getName(), Coord.parseCoord(defender)).getTownBlock();
-				
+
 				if (defenderTB.getType().equals(TownBlockType.ARENA) && attackerTB.getType().equals(TownBlockType.ARENA))
 					return true;
-				
+
 			} catch (NotRegisteredException e) {
 				// Not a Town owned Plot
 			}
@@ -364,7 +366,7 @@ public class CombatUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Test if all the listed nations are allies
 	 * 
