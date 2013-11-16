@@ -556,8 +556,6 @@ public class TownyPlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onNameTag(PlayerReceiveNameTagEvent event) {
-		event.setTag(ChatColor.BLACK + event.getTag());
-		/*
 		Player player = event.getPlayer();
 
 		Location loc = player.getLocation();
@@ -588,6 +586,6 @@ public class TownyPlayerListener implements Listener {
 			tag = ChatColor.AQUA + tag;
 
 			event.setTag(tag);
-		}*/
+		}
 	}
 }
