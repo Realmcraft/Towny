@@ -555,7 +555,7 @@ public class TownyPlayerListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onNameTag(PlayerReceiveNameTagEvent event) {		
+	public void onNameTag(PlayerReceiveNameTagEvent event) {	
 		Player player = event.getPlayer();
 
 		Location loc = player.getLocation();
@@ -582,7 +582,7 @@ public class TownyPlayerListener implements Listener {
 			tag = ChatColor.DARK_RED + tag;
 
 			event.setTag(tag);
-		}else if (CombatUtil.isAlly(player.getName(), namedPlayer.getName())){
+		}else if (CombatUtil.isEnemy(player.getName(), namedPlayer.getName())){
 			tag = ChatColor.AQUA + tag;
 
 			event.setTag(tag);
