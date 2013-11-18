@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/Questioner.jar"/>
 	<classpathentry kind="lib" path="lib/Essentials.jar"/>
 	<classpathentry kind="lib" path="lib/TagAPI.jar"/>
+	<classpathentry kind="lib" path="lib/WorldGuard.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

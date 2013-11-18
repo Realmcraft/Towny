@@ -17,6 +17,10 @@ import com.palmergames.bukkit.towny.utils.CombatUtil;
 import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
 import com.palmergames.bukkit.towny.war.flagwar.TownyWarConfig;
 import com.palmergames.bukkit.util.Colors;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -573,6 +577,20 @@ public class TownyPlayerListener implements Listener {
 		}
 
 		Player namedPlayer = event.getNamedPlayer();
+
+		if (plugin.getWorldGuard() != null){
+			Location namedPlayerLocation = namedPlayer.getLocation();
+
+			RegionManager mgr = plugin.getWorldGuard().getGlobalRegionManager().get(namedPlayerLocation.getWorld());
+
+			ApplicableRegionSet set = mgr.getApplicableRegions(namedPlayerLocation);
+
+			for (ProtectedRegion region : set){
+				if (region.getId().equalsIgnoreCase("pvparena")){
+					return;
+				}
+			}
+		}
 
 		String tag = event.getTag();
 

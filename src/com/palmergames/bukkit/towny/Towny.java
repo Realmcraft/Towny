@@ -21,6 +21,8 @@ import com.palmergames.bukkit.util.BukkitTools;
 import com.palmergames.util.FileMgmt;
 import com.palmergames.util.JavaUtil;
 import com.palmergames.util.StringMgmt;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -67,6 +69,8 @@ public class Towny extends JavaPlugin {
 	private boolean citizens2 = false;
 
 	private boolean error = false;
+	
+	private WorldGuardPlugin worldGuard;
 
 	@Override
 	public void onEnable() {
@@ -123,6 +127,14 @@ public class Towny extends JavaPlugin {
 					} catch (TownyException x) {
 						TownyMessaging.sendErrorMsg(player, x.getMessage());
 					}
+		}
+		
+		Plugin worldGuardPlugin = getServer().getPluginManager().getPlugin("WorldGuard");
+		
+		if (worldGuardPlugin == null){
+			worldGuard = null;
+		}else {
+			worldGuard = ((WorldGuardPlugin) worldGuardPlugin);
 		}
 	}
 
@@ -739,5 +751,9 @@ public class Towny extends JavaPlugin {
 	public TownyWarEntityListener getTownyWarEntityListener() {
 
 		return townyWarEntityListener;
+	}
+	
+	public WorldGuardPlugin getWorldGuard(){
+		return worldGuard;
 	}
 }
